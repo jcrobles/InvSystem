@@ -1,15 +1,16 @@
-from util import db
+from util           import Base
+from sqlalchemy     import Column, Integer, String, ForeignKey, Float
 
-class Item(db.Model):
+class Item(Base):
     __tablename__ = 'Item'
-    id 					= db.Column(db.Integer, primary_key = True)
-    name 				= db.Column(db.String(100))
-    num					= db.Column(db.String(100))
-    quantity_on_hand 	= db.Column(db.Integer)
-    reorder_quantity	= db.Column(db.Integer)
-    reorder_point		= db.Column(db.Integer)
-    vendor 				= db.relationship('Vendor', backref='item')
-    offer 				= db.relationship('Offer', backref='item')
+    id 					= Column(Integer, primary_key = True)
+    name 				= Column(String(100))
+    num					= Column(String(100))
+    quantity_on_hand 	= Column(Integer)
+    reorder_quantity	= Column(Integer)
+    reorder_point		= Column(Integer)
+#    vendor 				= relationship('Vendor', backref='item')
+#    offer 				= relationship('Offer', backref='item')
     
     def __init__(self, name, num, quantity_on_hand, reorder_quantity, reorder_point):
         self.name 				= name
@@ -18,30 +19,30 @@ class Item(db.Model):
         self.reorder_quantity	= reorder_quantity
         self.reorder_point		= reorder_point
 
-class Vendor(db.Model):
+class Vendor(Base):
     __tablename__ = 'Primary Vendor'
-    id          = db.Column(db.Integer, primary_key = True)
-    item_id		= db.Column(db.Integer, db.ForeignKey('Item.id'))
-    name 		= db.Column(db.String(100))
+    id          = Column(Integer, primary_key = True)
+    item_id		= Column(Integer, ForeignKey('Item.id'))
+    name 		= Column(String(100))
     
     def __init__(self):
         self.name 		= name
 
-class Offer(db.Model):
+class Offer(Base):
 	__tablename__ = 'Offer'
-	id 			= db.Column(db.Integer, primary_key = True)
-	item_id		= db.Column(db.Integer, db.ForeignKey('Item.id'))
-	quantity 	= db.Column(db.Integer)
-	price 		= db.Column(db.Float)
+	id 			= Column(Integer, primary_key = True)
+	item_id		= Column(Integer, ForeignKey('Item.id'))
+	quantity 	= Column(Integer)
+	price 		= Column(Float)
     
 	def __int__(self):
 		self.quantity 	= quantity
 		self.price 		= price
 
-class UOM(db.Model):
+class UOM(Base):
     __tablename__ = 'UOM'
-    id          = db.Column(db.Integer, primary_key = True)
-    name		= db.Column(db.String(100))
+    id          = Column(Integer, primary_key = True)
+    name		= Column(String(100))
     
     def __init__(self):
         self.name 		= name
